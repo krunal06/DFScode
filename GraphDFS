@@ -14,12 +14,9 @@ public class GraphDFS{
 			color = Color.WHITE;
 		}
 	}
-	
 	public enum Color {
 		WHITE, GREY, BLACK
 	}
-	
-	// Number of vertex
 	private int n;
 	private ArrayList<ArrayList<Integer>> graph;
 	private Vertex[] vertices;
@@ -46,10 +43,7 @@ public class GraphDFS{
 			}
 		}
 	}
-	public ArrayList<Vertex> getresult() {
-		return result;
-	}
-
+	
 	private void visitDFS(Vertex u) {
 		result.add(u);
 		u.color = Color.GREY;
@@ -83,19 +77,13 @@ public class GraphDFS{
 		time++;
 		u.timestamp2 = time;
 	}
-	
-	
 	public void printresult() {
 		for (int i = 0; i < n; i++) {
 			Vertex v = result.get(i);
 			System.out.println(v.vertex + " : " + v.timestamp1 + " / " + v.timestamp2);
 		}
 	}
-	
-
 	public static void main(String[] args) {
-
-
 		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> a = new ArrayList<Integer>();
 		a.add(1); 
