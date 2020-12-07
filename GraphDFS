@@ -1,0 +1,131 @@
+import java.util.ArrayList;
+public class GraphDFS{
+	public class Vertex {
+		public int vertex;
+		public Color color;
+		public Vertex parent;
+		public int timestamp1; //when first visit
+		public int timestamp2; // after final visit
+		public Vertex(int v) {
+			vertex = v;
+			parent = null;
+			timestamp1 = Integer.MAX_VALUE;
+			timestamp2 = Integer.MAX_VALUE;
+			color = Color.WHITE;
+		}
+	}
+	
+	public enum Color {
+		WHITE, GREY, BLACK
+	}
+	
+	// Number of vertex
+	private int n;
+	private ArrayList<ArrayList<Integer>> graph;
+	private Vertex[] vertices;
+	private ArrayList<Vertex> result;
+	private int time;
+	
+	public GraphDFS(ArrayList<ArrayList<Integer>> graph) {
+		this.n = graph.size();
+		this.graph = graph;
+		this.vertices = new Vertex[n];
+		this.result = new ArrayList<Vertex>();
+		this.time = 0;
+	}
+	
+	public void DFS() {
+		int i = 0;
+		for (i = 0; i < n; i++) {
+			vertices[i] = new Vertex(i);
+		}
+		for (i = 0; i < n; i++) {
+			Vertex u = vertices[i];
+			if (u.color == Color.WHITE) {
+				visitDFS(u);
+			}
+		}
+	}
+	public ArrayList<Vertex> getresult() {
+		return result;
+	}
+
+	private void visitDFS(Vertex u) {
+		result.add(u);
+		u.color = Color.GREY;
+		time++;
+		u.timestamp1 = time;
+
+		ArrayList<Integer> adjList = graph.get(u.vertex);
+		for (int i = 0; i < adjList.size(); i++) {
+			Vertex v = vertices[adjList.get(i)];
+			if (v.color == Color.WHITE) {
+				v.timestamp1 = time;
+				v.parent = u;
+				System.out.println("tree edge");
+				visitDFS(v);
+			} 
+			else if (v.color == Color.GREY) {
+				System.out.println("back edge");
+				
+			} 
+			else if ((v.color == Color.BLACK) && (u.timestamp1 < v.timestamp1)) {
+				
+				System.out.println("forward edge");
+				
+			} 
+			else  {
+				System.out.println("cross edge");
+				
+			} 
+		}
+		u.color = Color.BLACK;
+		time++;
+		u.timestamp2 = time;
+	}
+	
+	
+	public void printresult() {
+		for (int i = 0; i < n; i++) {
+			Vertex v = result.get(i);
+			System.out.println(v.vertex + " : " + v.timestamp1 + " / " + v.timestamp2);
+		}
+	}
+	
+
+	public static void main(String[] args) {
+
+
+		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		a.add(1); 
+		a.add(2); 
+		a.add(3); 
+		a.add(4);
+		
+		graph.add(a);
+		
+		a = new ArrayList<Integer>();
+		a.add(2);
+		a.add(3); 
+		a.add(4);
+		
+        graph.add(a);
+		
+		a = new ArrayList<Integer>();
+		a.add(3);
+		a.add(4); 
+         graph.add(a);
+		
+		a = new ArrayList<Integer>();
+		a.add(4); 
+		graph.add(a);
+
+        a = new ArrayList<Integer>();
+		graph.add(a);
+		
+		GraphDFS graphDFS = new GraphDFS(graph);
+		graphDFS.DFS();
+		graphDFS.printresult();
+	}
+}
